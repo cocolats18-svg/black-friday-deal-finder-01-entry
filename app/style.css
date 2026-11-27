@@ -1,0 +1,395 @@
+/* Deal Sleuth — a warm, newsprint-style deal board. No web fonts, no images:
+   the whole look is CSS, so the first load stays tiny. */
+
+:root {
+  --ink: #1d2433;
+  --ink-soft: #4a5265;
+  --paper: #faf6ef;
+  --card: #ffffff;
+  --line: #e3dccb;
+  --accent: #c2410c;
+  --accent-dark: #9a3412;
+  --teal: #0f766e;
+  --gold: #b45309;
+  --good: #166534;
+  --good-bg: #dcfce7;
+  --warn: #92400e;
+  --warn-bg: #fef3c7;
+  --chip-bg: #eef2ff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a { color: var(--accent-dark); }
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.masthead {
+  background: #14213d;
+  color: #fdf6e3;
+  border-bottom: 5px solid var(--accent);
+}
+
+.masthead-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 22px 18px 18px;
+}
+
+.brand {
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fdf6e3;
+  text-decoration: none;
+}
+
+.brand::after {
+  content: " 🔍";
+  font-size: 1.5rem;
+}
+
+.tagline {
+  margin: 4px 0 0;
+  color: #cbd5e1;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.statsbar {
+  background: #fff7ed;
+  border-bottom: 1px solid var(--line);
+}
+
+.statsbar-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 10px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.statsbar strong { color: var(--ink); }
+
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+/* ---- filter bar ---- */
+
+.filters {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 3px rgba(29, 36, 51, 0.08);
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.search {
+  flex: 1 1 240px;
+  min-width: 200px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: #fffdf8;
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.filters select {
+  padding: 10px 8px;
+  font-size: 0.95rem;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: #fffdf8;
+  color: var(--ink);
+}
+
+.result-count {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin: 10px 0 0;
+}
+
+.result-count strong { color: var(--ink); }
+
+.verdict-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 10px;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+/* ---- deal grid ---- */
+
+.deals {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.deal-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(29, 36, 51, 0.08);
+}
+
+.deal-card:hover { border-color: var(--accent); }
+
+.deal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.deal-cat {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.deal-store {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.deal-title {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.deal-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.deal-title a:hover { color: var(--accent-dark); text-decoration: underline; }
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.price-now {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+.price-was {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.save-line {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.verdict {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 4px 8px;
+  width: fit-content;
+}
+
+.verdict-new-low { background: var(--good-bg); color: var(--good); }
+.verdict-strong { background: var(--chip-bg); color: #3730a3; }
+.verdict-routine { background: var(--warn-bg); color: var(--warn); }
+
+.deal-evidence {
+  margin: 0;
+  font-size: 0.93rem;
+  color: var(--ink-soft);
+}
+
+.deal-meta {
+  margin-top: auto;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  border-top: 1px dashed var(--line);
+  padding-top: 8px;
+}
+
+.deal-meta a { color: var(--ink-soft); }
+
+.store-link {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 8px;
+  padding: 9px 14px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.store-link:hover { background: var(--accent-dark); }
+
+.empty {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+/* ---- detail view ---- */
+
+.detail {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(29, 36, 51, 0.08);
+}
+
+.back-link {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.detail h1 {
+  font-size: 1.7rem;
+  line-height: 1.25;
+  margin: 10px 0 4px;
+}
+
+.detail .price-row { margin: 12px 0 4px; }
+
+.detail .price-now { font-size: 2.1rem; }
+
+.evidence-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 16px 0;
+}
+
+.evidence-box h2 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.evidence-box p { margin: 0; }
+
+.fact-list {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+  padding-left: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+  margin: 16px 0 0;
+}
+
+.fact-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 10px;
+}
+
+.fact-list li span:first-child {
+  font-weight: 700;
+  min-width: 110px;
+  color: var(--ink-soft);
+}
+
+.compare-note {
+  margin-top: 18px;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.site-footer {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 8px 18px 28px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.site-footer p { margin: 6px 0; }
+
+@media (max-width: 560px) {
+  .brand { font-size: 1.7rem; }
+  .deals { grid-template-columns: 1fr; }
+  .detail { padding: 16px; }
+  .fact-list li { flex-direction: column; gap: 0; }
+}
